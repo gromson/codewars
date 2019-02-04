@@ -36,6 +36,15 @@ func TestChooseBestSum(t *testing.T) {
 	}
 }
 
+func TestChooseBestSum2(t *testing.T) {
+	for _, c := range tcases {
+		res := ChooseBestSum2(c.max, c.num, c.list)
+		if res != c.res {
+			t.Errorf("Result: %d, expected %d", res, c.res)
+		}
+	}
+}
+
 func Test_bitCounter(t *testing.T) {
 	for _, c := range bitTestCases {
 		res := bitCout(c[0])
@@ -48,6 +57,12 @@ func Test_bitCounter(t *testing.T) {
 func BenchmarkChooseBestSum(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		ChooseBestSum(tcases[0].max, tcases[0].num, tcases[0].list)
+	}
+}
+
+func BenchmarkChooseBestSum2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ChooseBestSum2(tcases[0].max, tcases[0].num, tcases[0].list)
 	}
 }
 
