@@ -18,6 +18,15 @@ var tcases = []caseStruct{
 	{331, 5, []int{91, 74, 73, 85, 73, 81, 87}, -1},
 }
 
+var bitTestCases = [][2]int{
+	{0, 0},
+	{1, 1},
+	{2, 1},
+	{3, 2},
+	{37, 3},
+	{170, 4},
+}
+
 func TestChooseBestSum(t *testing.T) {
 	for _, c := range tcases {
 		res := ChooseBestSum(c.max, c.num, c.list)
@@ -27,8 +36,23 @@ func TestChooseBestSum(t *testing.T) {
 	}
 }
 
+func Test_bitCounter(t *testing.T) {
+	for _, c := range bitTestCases {
+		res := bitCout(c[0])
+		if res != c[1] {
+			t.Errorf("Result: %d, expected %d", res, c[1])
+		}
+	}
+}
+
 func BenchmarkChooseBestSum(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		ChooseBestSum(tcases[0].max, tcases[0].num, tcases[0].list)
+	}
+}
+
+func Benchmark_bitCunter(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		bitCout(bitTestCases[5][0])
 	}
 }
