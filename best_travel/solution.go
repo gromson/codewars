@@ -3,7 +3,7 @@ package best_travel
 /*
 t - max distance
 k - number of towns
- */
+*/
 
 func ChooseBestSum(t, k int, ls []int) int {
 	n := len(ls)
