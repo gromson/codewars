@@ -3,7 +3,8 @@ https://www.codewars.com/kata/5672682212c8ecf83e000050/train/go
 Consider a sequence `u` where u is defined as follows:
 
 1. The number `u(0) = 1` is the first one in `u`.
-1. For each `x` in `u`, then `y = 2 * x + 1` and `z = 3 * x + 1` must be in `u` too.
+1. For each `x` in `u`, then `y = 2 * x + 1` and `z = 3 * x + 1` must
+be in `u` too.
 1. There are no other numbers in `u`.
 
 Ex: `u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]`
