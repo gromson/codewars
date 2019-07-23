@@ -1,6 +1,9 @@
 package twice_linear
 
-import "sort"
+import (
+	"math"
+	"sort"
+)
 
 // [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]
 // 0. 3
@@ -9,11 +12,71 @@ import "sort"
 // 3. 31
 // 4. 63
 
+type Node struct {
+	Value  int
+	Parent *Node
+	Left   *Node
+	Right  *Node
+	slice  []int
+}
+
+func NewNode(value int, parent *Node) *Node {
+	return &Node{value, parent, nil, nil, make([]int, 0)}
+}
+
+func (n *Node) Grow(deep int) {
+	if deep == 0 {
+		return
+	}
+
+	n.Left = NewNode(n.Value*2+1, n)
+	n.Right = NewNode(n.Value*3+1, n)
+
+	n.Left.Grow(deep - 1)
+	n.Right.Grow(deep - 1)
+}
+
+func (n *Node) ToSlice() []int {
+	n.iterate(&n.slice)
+	return n.slice
+}
+
+func (n *Node) iterate(s *[]int) {
+	if n == nil {
+		return
+	}
+
+	*s = append(*s, n.Value)
+	n.Left.iterate(s)
+	n.Right.iterate(s)
+}
+
+func DblLinear(n int) int {
+	steps := int(math.Ceil(math.Log2(float64(n))))
+
+	tree := NewNode(1, nil)
+	tree.Grow(steps)
+
+	slice := tree.ToSlice()
+	sort.Ints(slice)
+
+	res := make([]int, 0, n)
+	for _, r := range slice {
+		if len(res) > 0 && res[len(res)-1] == r {
+			continue
+		}
+
+		res = append(res, r)
+	}
+
+	return res[n]
+}
+
 type Queue []int
 
 func (q *Queue) push(i ...int) {
 	*q = append(*q, i...)
-	sort.Ints(*q)
+	//sort.Ints(*q)
 }
 
 func (q *Queue) pop() int {
@@ -22,61 +85,38 @@ func (q *Queue) pop() int {
 	return r
 }
 
-func DblLinear(n int) int {
-	u := buildSequence(n)
-	return u[n]
-}
-
-func buildSequence(n int) []int {
+func DblLinear_(n int) int {
 	u := []int{1}
 	q := make(Queue, 0)
 
-	y, z := getYZ(1)
+	x := 1
+	y, z := x*2+1, x*3+1
 	q.push(y, z)
 
-	for len(u) <= n {
-		x := q.pop()
+	for len(u) <= n*2 || len(q) > 0 {
+		x = q.pop()
 
 		if u[len(u)-1] == x {
 			continue
 		}
 
-		y, z := addValue(&u, x)
-
-		//if len(u) <= n {
+		u = append(u, x)
+		y, z := x*2+1, x*3+1
+		if len(u) <= n*2 {
 			q.push(y, z)
-		//}
+		}
 	}
 
-	//steps := int(math.Ceil(math.Log2(float64(n)))) + 1
-	//
-	//for s := 0; s <= steps; s++ {
-	//	y1, z1, y2, z2 := addValues(&u, y, z, n)
-	//	addValues(&u, y1, y2, n)
-	//	y, z = z1, z2
-	//}
+	sort.Ints(u)
 
-	return u
-}
+	res := make([]int, 0, n)
+	for _, r := range u {
+		if len(res) > 0 && res[len(res)-1] == r {
+			continue
+		}
 
-func getYZ(x int) (y, z int) {
-	y = x*2 + 1
-	z = x*3 + 1
-	return
-}
+		res = append(res, r)
+	}
 
-func addValues(u *[]int, x1, x2 int) (y1, z1, y2, z2 int) {
-	//if len(*u) <= n {
-	*u = append(*u, x1, x2)
-	y1, z1 = getYZ(x1)
-	y2, z2 = getYZ(x2)
-	//}
-
-	return
-}
-
-func addValue(u *[]int, x int) (y, z int) {
-	*u = append(*u, x)
-	y, z = getYZ(x)
-	return
+	return res[n]
 }
