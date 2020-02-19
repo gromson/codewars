@@ -77,6 +77,7 @@ func Solution__(blocks []int) int {
 }
 
 func Solution(blocks []int) int {
+	li := 0
 	md, d := 0, 0
 	direction := 1
 	if blocks[1] < blocks[0] {
@@ -90,17 +91,12 @@ func Solution(blocks []int) int {
 		}
 
 		if n >= blocks[i-1] {
-			//if 1 == lastDirection {
-				d++
-				lastDirection = 1
-				continue
-			//}
-			//if d > md {
-			//	md = d
-			//}
-			//d = 1
-			//lastDirection = 1
-			//continue
+			if n > blocks[i-1] {
+				li = i
+			}
+			d++
+			lastDirection = 1
+			continue
 		}
 
 		if n <= blocks[i-1] {
@@ -112,7 +108,7 @@ func Solution(blocks []int) int {
 			if d > md {
 				md = d
 			}
-			d = 2
+			d = i - li + 1
 			lastDirection = -1
 			continue
 		}
@@ -141,5 +137,6 @@ func main() {
 	fmt.Println(r, r == 6)
 	r = Solution([]int{1, 1, 3, 4, 3, 2, 4, 5, 6, 3, 2, 1, 1, 1, 1, 1, 2, 3, 4})
 	fmt.Println(r, r == 11)
-
+	r = Solution([]int{6,5,4,3,1,1,2,1,4})
+	fmt.Println(r, r == 7)
 }
