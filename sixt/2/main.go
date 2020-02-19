@@ -31,7 +31,7 @@ func Solution_(blocks []int) int {
 	return longestDistance
 }
 
-func Solution(blocks []int) int {
+func Solution__(blocks []int) int {
 	longestDistance := 0
 	currentDistance := 0
 	lastDirection := 1
@@ -76,6 +76,56 @@ func Solution(blocks []int) int {
 	return longestDistance
 }
 
+func Solution(blocks []int) int {
+	md, d := 0, 0
+	direction := 1
+	if blocks[1] < blocks[0] {
+		direction *= -1
+	}
+	lastDirection := direction
+	for i, n := range blocks {
+		if i == 0 {
+			d++
+			continue
+		}
+
+		if n >= blocks[i-1] {
+			//if 1 == lastDirection {
+				d++
+				lastDirection = 1
+				continue
+			//}
+			//if d > md {
+			//	md = d
+			//}
+			//d = 1
+			//lastDirection = 1
+			//continue
+		}
+
+		if n <= blocks[i-1] {
+			if -1 == lastDirection {
+				d++
+				lastDirection = -1
+				continue
+			}
+			if d > md {
+				md = d
+			}
+			d = 2
+			lastDirection = -1
+			continue
+		}
+
+	}
+
+	if d > md {
+		return d
+	}
+
+	return md
+}
+
 func main() {
 	r := Solution([]int{1, 5, 5, 2, 6})
 	fmt.Println(r, r == 4)
@@ -90,6 +140,6 @@ func main() {
 	r = Solution([]int{1, 1, 3, 4, 3, 2, 4, 5, 6, 3})
 	fmt.Println(r, r == 6)
 	r = Solution([]int{1, 1, 3, 4, 3, 2, 4, 5, 6, 3, 2, 1, 1, 1, 1, 1, 2, 3, 4})
-	fmt.Println(r, r == 1)
+	fmt.Println(r, r == 11)
 
 }
