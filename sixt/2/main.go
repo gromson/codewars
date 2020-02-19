@@ -83,7 +83,6 @@ func Solution(blocks []int) int {
 	if blocks[1] < blocks[0] {
 		direction *= -1
 	}
-	lastDirection := direction
 	for i, n := range blocks {
 		if i == 0 {
 			d++
@@ -95,21 +94,21 @@ func Solution(blocks []int) int {
 				li = i
 			}
 			d++
-			lastDirection = 1
+			direction = 1
 			continue
 		}
 
 		if n <= blocks[i-1] {
-			if -1 == lastDirection {
+			if -1 == direction {
 				d++
-				lastDirection = -1
+				direction = -1
 				continue
 			}
 			if d > md {
 				md = d
 			}
 			d = i - li + 1
-			lastDirection = -1
+			direction = -1
 			continue
 		}
 
